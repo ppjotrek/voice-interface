@@ -1,7 +1,0 @@
-numpy
-SpeechRecognition
-pyaudio
-scipy
-matplotlib
-scikit-learn
-pyttsx3
