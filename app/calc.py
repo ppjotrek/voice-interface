@@ -1,6 +1,8 @@
 import speech_recognition as sr
 import pyttsx3
 import time
+import winsound
+
 
 engine = pyttsx3.init()
 
@@ -21,6 +23,24 @@ def voice_to_text():
    pass
  return voice_input
 
+def replace_words(input_text):
+    replacements = {
+        "otwórz nawias": "(",
+        "zamknij nawias": ")",
+        "plus": "+",
+        "minus": "-",
+        "razy": "*",
+        "dzielone przez": "/",
+        "dzielone na": "/",
+        "do potęgi": "**",
+        "silnia": "factorial",
+        "pierwiastek": "sqrt",
+        "równa się": ""
+    }
+    for word, replacement in replacements.items():
+        input_text = input_text.replace(word, replacement)
+    return input_text
+
 def main():
     
     engine.say("Kalkulator jest gotowy do pracy.")
@@ -31,6 +51,7 @@ def main():
     while True:
 
         print('Wprowadź operację...')
+        winsound.Beep(1000, 100)
         inp = voice_to_text().lower()
         
         if 'stop' in inp:
@@ -39,11 +60,11 @@ def main():
         
         else:
             
-            interpreted = inp.replace("otwórz nawias", "(").replace("zamknij nawias", ")").replace("plus", "+").replace("minus", "-").replace("razy", "*").replace("dzielone przez", "/").replace("do potęgi", "**").replace("silnia", "factorial").replace("pierwiastek", "sqrt").replace("równa się", "")
+            interpreted = replace_words(inp)
             print(f"Działanie: {interpreted}")
             
             try:
-                wynik = eval(interpreted.strip())
+                wynik = eval(interpreted.strip()) #ast.eval?
                 print(f"Wynik to {wynik}")
                 time.sleep(3)
             except (SyntaxError, TypeError):
